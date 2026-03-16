@@ -1,4 +1,4 @@
 node_modules*
 app-logs*
-.env
-.env.*
+# .env
+# .env.*
