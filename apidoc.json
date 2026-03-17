@@ -1,0 +1,7 @@
+{
+  "name": "URL Shortener API",
+  "version": "0.0.0",
+  "description": "Simple URL shortener backend API",
+  "title": "API Docs",
+  "url": "http://localhost:8000"
+}

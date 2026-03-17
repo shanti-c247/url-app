@@ -1,14 +1,15 @@
+const logger = require("../logger/logger");
 const urlService = require("../services/url.service");
 
 /**
- * @api {post} /shorten Create Short URL
+ * @api {post} /api/shorten Create Short URL
  * @apiName CreateShortUrl
  * @apiGroup URL
  * @apiVersion 1.0.0
  *
  * @apiDescription Create a shortened URL from a long URL.
  *
- * @apiSampleRequest http://localhost:3000
+ * @apiSampleRequest http://localhost:8000
  *
  * @apiBody {String} url Original long URL to shorten.
  *
@@ -22,7 +23,7 @@ const urlService = require("../services/url.service");
  * @apiSuccessExample {json} Success Response:
  * HTTP/1.1 200 OK
  * {
- *   "shortUrl": "http://localhost:3000/Ab3Xk9"
+ *   "shortUrl": "http://localhost:8000/Ab3Xk9"
  * }
  *
  * @apiError (BadRequest) {String} message Invalid URL.
@@ -40,9 +41,10 @@ const urlService = require("../services/url.service");
  * }
  */
 exports.shortenUrl = async (req, res) => {
+  console.log('ueee', req.body);
+
   try {
     const { url } = req.body;
-console.log(url);
 
     if (!url) {
       return res.status(400).json({
@@ -53,10 +55,11 @@ console.log(url);
     const code = await urlService.createShortUrl(url);
 
     res.status(200).json({
-      shortUrl: `http://localhost:3000/${code}`,
+      shortUrl: `http://localhost:8000/api/${code}`,
     });
 
   } catch (error) {
+    logger.error(error)
     res.status(500).json({
       message: "Failed to create short URL",
       error: error.message,
@@ -65,14 +68,14 @@ console.log(url);
 };
 
 /**
- * @api {get} /:code Redirect Short URL
+ * @api {get} /api/:code Redirect Short URL
  * @apiName RedirectShortUrl
  * @apiGroup URL
  * @apiVersion 1.0.0
  *
  * @apiDescription Redirects a short URL to the original URL.
  *
- * @apiSampleRequest http://localhost:3000
+ * @apiSampleRequest http://localhost:8000
  *
  * @apiParam {String} code Short URL code.
  *
@@ -102,8 +105,6 @@ console.log(url);
 exports.redirectUrl = async (req, res) => {
   try {
     const { code } = req.params;
-console.log(code);
-
     const result = await urlService.getOriginalUrl(code);
 
     if (!result) {

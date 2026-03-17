@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>URL Shortener</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      width: 360px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 15px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      background: #007bff;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .result {
+      margin-top: 15px;
+      word-break: break-all;
+    }
+
+    .error {
+      color: red;
+    }
+
+    .success {
+      color: green;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>🔗 URL Shortener</h2>
+
+  <input
+    type="text"
+    id="urlInput"
+    placeholder="Enter your URL"
+  />
+
+  <button onclick="shortenUrl()">Shorten URL</button>
+
+  <div id="result" class="result"></div>
+</div>
+
+<script>
+  async function shortenUrl() {
+    const url = document.getElementById("urlInput").value.trim();
+    const resultDiv = document.getElementById("result");
+
+    if (!url) {
+      resultDiv.innerHTML = "<span class='error'>❌ Please enter a URL</span>";
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/shorten", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ url })
+      });
+
+      const data = await response.json();
+
+      console.log("API Response:", data);
+
+      // Adjust based on your API response
+      const shortCode = data.code || data.shortCode || data.shortUrl;
+
+      if (shortCode) {
+        const shortUrl = shortCode.startsWith("http")
+          ? shortCode
+          : `${window.location.origin}/${shortCode}`;
+
+        resultDiv.innerHTML = `
+          <span class="success">✅ Short URL:</span><br/>
+          <a href="${shortUrl}" target="_blank">${shortUrl}</a>
+        `;
+      } else {
+        resultDiv.innerHTML = "<span class='error'>❌ Invalid response</span>";
+      }
+
+    } catch (error) {
+      console.error(error);
+      resultDiv.innerHTML = "<span class='error'>❌ Server error</span>";
+    }
+  }
+</script>
+
+</body>
+</html>
