@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "url-app-2",
+  "name": "url-app",
   "compatibility_date": "2025-09-27",
   "observability": {
     "enabled": true
