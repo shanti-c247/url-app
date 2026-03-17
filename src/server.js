@@ -22,7 +22,7 @@ app.use(
 );
 
 // ✅ Serve static frontend
-app.use(express.static(path.join(__dirname, "../public")));
+app.use("/app",express.static(path.join(__dirname, "../public")));
 
 // Serve API documentation
 app.use("/docs", express.static(path.join(__dirname, "../apidoc")));
