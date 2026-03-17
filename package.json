@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/server.js",
     "docs": "apidoc -i src/ -o apidoc/",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
   },
   "keywords": [],
   "author": "",
@@ -28,6 +30,7 @@
     "pino-roll": "^4.0.0"
   },
   "devDependencies": {
-    "apidoc": "^1.2.0"
+    "apidoc": "^1.2.0",
+    "wrangler": "^4.74.0"
   }
 }
